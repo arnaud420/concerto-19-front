@@ -1,0 +1,29 @@
+image: node
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+
+stages:
+  - setup
+  - tests
+  - build
+
+setup:
+  stage: setup
+  script:
+    - npm install
+    - npm rebuild node-sass
+
+tests:
+  stage: tests
+  script:
+    - npm run test
+
+build:
+  stage: build
+  script:
+    - unset CI
+    - cp src/parameters.dist.ts src/parameters.ts
+    - npm run build
